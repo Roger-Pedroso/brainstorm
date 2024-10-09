@@ -1,0 +1,42 @@
+# Node.js
+backend/node_modules/
+npm-debug.log
+package-lock.json
+.env
+
+# Docker
+**/Dockerfile
+**/docker-compose.yml
+
+# PHP
+frontend/vendor/
+*.log
+*.cache
+*.session
+*.phps
+*.php.swp
+*.tmp
+
+# IDEs e editores
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Sistema de arquivos
+.DS_Store
+Thumbs.db
+
+# Outras configurações de IDEs
+*.iml
+*.swp
+*~
+
+# Backups e arquivos temporários
+*.bak
+*.orig
+*.tmp
+
+# Ignorar pastas de cache
+cache/
+logs/
