@@ -37,6 +37,21 @@ const listarIdeias = async (req, res) => {
   }
 };
 
+const listarIdeiasCurtidas = async (req, res) => {
+  try {
+    const { topico_id, user_id } = req.query;
+
+    const result = await pool.query(
+      "SELECT * FROM ideias LEFT JOIN likes ON ideias.id = likes.ideia_id WHERE topico_id = $1 AND likes.user_id = $2",
+      [topico_id, user_id]
+    );
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Erro ao buscar ideias CURTIDAS:", error);
+    res.status(500).json({ message: "Erro interno no servidor" });
+  }
+};
+
 const likeIdeia = async (req, res) => {
   const ideia_id = req.params.id;
   const { user_id } = req.body;
@@ -70,4 +85,9 @@ const likeIdeia = async (req, res) => {
   }
 };
 
-module.exports = { cadastrarIdeia, listarIdeias, likeIdeia };
+module.exports = {
+  cadastrarIdeia,
+  listarIdeias,
+  likeIdeia,
+  listarIdeiasCurtidas,
+};

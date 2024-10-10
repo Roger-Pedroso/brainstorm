@@ -11,7 +11,7 @@ session_start();
     <?php if (isset($_SESSION['user_id'])): ?>
         <h1>Bem-vindo, <?php echo $_SESSION['user_name']; ?>!</h1>
         <p>Email: <?php echo $_SESSION['user_email']; ?></p>
-        <img src="<?php echo $_SESSION['user_avatar']; ?>" alt="Avatar" width="100">
+        <img src="<?php echo $_SESSION['user_profile_picture']; ?>" alt="Avatar" width="100">
     <?php else: ?>
         <h1>Você não está logado</h1>
         <a href="http://localhost:3000/auth/google">

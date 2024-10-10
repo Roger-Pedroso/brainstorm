@@ -1,7 +1,7 @@
 <?php
 // Função para buscar tópicos
 function buscarTopicos() {
-    $url = 'http://api:3000/topicos'; // URL da API para buscar tópicos
+    $url = 'http://localhost:3000/topicos'; // URL da API para buscar tópicos
     $response = file_get_contents($url);
     return json_decode($response, true);
 }
@@ -19,11 +19,11 @@ $topicos = buscarTopicos();
 </head>
 <body>
     <h1>Lista de Tópicos</h1>
-    <a href="cadastrar_topico.php" class="button">Cadastrar Novo Tópico</a>
+    <a href="/topico/cadastrar_topico.php" class="button">Cadastrar Novo Tópico</a>
     <ul>
         <?php foreach ($topicos as $topico): ?>
             <li>
-                <a href="topico.php?id=<?= $topico['id'] ?>"><?= $topico['titulo'] ?></a>
+                <a href="/topico/topico.php?id=<?= $topico['id'] ?>"><?= $topico['titulo'] ?></a>
             </li>
         <?php endforeach; ?>
     </ul>

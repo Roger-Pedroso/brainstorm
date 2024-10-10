@@ -79,7 +79,7 @@ router.get(
       const user = req.user; // Os dados do usuário autenticado
       // Redirecionar para o frontend com os dados do usuário
       res.redirect(
-        `http://localhost:8080/set_session.php?id=${
+        `http://localhost:8080/login/set_session.php?id=${
           user.id
         }&name=${encodeURIComponent(user.name)}&email=${encodeURIComponent(
           user.email
@@ -91,20 +91,5 @@ router.get(
     }
   }
 );
-
-router.get("/user", (req, res) => {
-  console.log("AAAAAAAAAA", req.isAuthenticated());
-
-  if (req.isAuthenticated()) {
-    // Enviar dados do usuário logado
-    res.json({
-      id: req.user.id,
-      name: req.user.name,
-      email: req.user.email,
-    });
-  } else {
-    res.status(401).send("Não autenticado");
-  }
-});
 
 module.exports = router;

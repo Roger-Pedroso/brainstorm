@@ -9,7 +9,7 @@ if (isset($_GET['id']) && isset($_GET['name']) && isset($_GET['email'])) {
     $_SESSION['user_profile_picture'] = urldecode($_GET['profile_picture']);
     
     // Redirecionar para a página principal ou de perfil
-    header("Location: menu.php");
+    header("Location: /menu/menu.php");
     exit();
 } else {
     // Se faltar algum dado, redirecionar para a página de login

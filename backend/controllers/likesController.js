@@ -15,7 +15,7 @@ router.post("/ideias/:id/like", async (req, res) => {
     );
 
     if (existingLike.rows.length > 0) {
-      return res.status(400).json({ message: "Você já curtiu essa ideia" });
+      return res.json({ message: "Você já curtiu essa ideia" });
     }
 
     // Adiciona o like
