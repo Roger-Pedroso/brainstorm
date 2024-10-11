@@ -23,7 +23,7 @@ $topicos = buscarTopicos();
     <ul>
         <?php foreach ($topicos as $topico): ?>
             <li>
-                <a href="/topico/topico.php?id=<?= $topico['id'] ?>"><?= $topico['titulo'] ?></a>
+                <a href="/topico/topico.php?id=<?= $topico['id'] ?>&titulo=<?= $topico['titulo'] ?>"><?= $topico['titulo'] ?></a>
             </li>
         <?php endforeach; ?>
     </ul>

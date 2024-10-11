@@ -8,9 +8,9 @@ const {
 } = require("../controllers/ideiasController");
 
 // Rota para cadastrar uma ideia
-router.post("/", cadastrarIdeia);
 router.get("/liked", listarIdeiasCurtidas);
 router.get("/:topico_id", listarIdeias);
+router.post("/", cadastrarIdeia);
 router.post("/:id/like", likeIdeia);
 
 module.exports = router;

@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $titulo = $_POST['titulo'];
     $user_id = $_SESSION['user_id'];
 
-    $url = 'http://api:3000/topicos';
+    $url = 'http://localhost:3000/topicos';
 
     $data = json_encode(['titulo' => $titulo, 'user_id' => $user_id]);
 
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = file_get_contents($url, false, $context);
 
     if ($result) {
-        header('Location: menu.php'); // Redirecionar para a lista de tópicos
+        header('Location: /menu/menu.php'); // Redirecionar para a lista de tópicos
         exit;
     } else {
         echo "Erro ao cadastrar o tópico.";

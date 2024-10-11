@@ -30,4 +30,39 @@ const listarTopicos = async (req, res) => {
   }
 };
 
-module.exports = { cadastrarTopico, listarTopicos };
+const buscarTopico = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query("SELECT * FROM topicos WHERE id = $1", [
+      id,
+    ]);
+    res.status(200).json(result.rows[0]);
+  } catch (error) {
+    console.error("Erro ao buscar tópico:", error);
+    res.status(500).json({ message: "Erro interno no servidor" });
+  }
+};
+
+const listarParticipantes = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query(
+      "SELECT DISTINCT(name) FROM users " +
+        "LEFT JOIN likes ON likes.user_id = users.id " +
+        "LEFT JOIN ideias ON ideias.id = likes.ideia_id " +
+        "WHERE ideias.topico_id = $1",
+      [id]
+    );
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Erro ao buscar participantes:", error);
+    res.status(500).json({ message: "Erro interno no servidor" });
+  }
+};
+
+module.exports = {
+  cadastrarTopico,
+  listarTopicos,
+  listarParticipantes,
+  buscarTopico,
+};

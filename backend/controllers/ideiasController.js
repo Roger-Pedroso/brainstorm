@@ -64,7 +64,17 @@ const likeIdeia = async (req, res) => {
     );
 
     if (existingLike.rows.length > 0) {
-      return res.status(400).json({ message: "Você já curtiu essa ideia" });
+      // Remove o like
+      await pool.query(
+        "DELETE FROM likes WHERE user_id = $1 AND ideia_id = $2",
+        [user_id, ideia_id]
+      );
+
+      // Atualiza o número de likes da ideia
+      await pool.query("UPDATE ideias SET likes = likes - 1 WHERE id = $1", [
+        ideia_id,
+      ]);
+      return res.json({ message: "Ideia descurtida" });
     }
 
     // Adiciona o like

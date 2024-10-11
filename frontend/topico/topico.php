@@ -13,14 +13,28 @@ function buscarMeusLikes($topico_id, $user_id) {
     return json_decode($response, true);
 }
 
-// Verifica se o ID do tópico foi passado na URL
+function participantesDoTopico($topico_id) {
+    $url = "http://localhost:3000/topicos/$topico_id/participantes"; // URL da API para buscar ideias
+    $response = file_get_contents($url);
+    return json_decode($response, true);
+}
+
 if (!isset($_GET['id'])) {
     die("ID do tópico não fornecido.");
 }
 
 $topico_id = $_GET['id'];
+
+function topicoInfo ($topico_id) {
+    $url = "http://localhost:3000/topicos/$topico_id"; // URL da API para buscar ideias
+    $response = file_get_contents($url);
+    return json_decode($response, true);
+}
+$topico_info = topicoInfo($topico_id);
+
 $ideias = buscarIdeias($topico_id);
 $ideiasCurtidas = buscarMeusLikes($topico_id, $_SESSION['user_id']);
+$participantes = participantesDoTopico($topico_id);
 
 $ideiasFiltered = [];
 
@@ -33,18 +47,13 @@ function comparaArrays($id, $segundo_array) {
     return false; // Não encontrado
 }
 
-// Percorre o primeiro array
 foreach ($ideias as $ideia) {
-    // Verifica se o 'id' do primeiro array está presente no segundo array
     if (comparaArrays($ideia['id'], $ideiasCurtidas)) {
-        // Adiciona o ideia com a propriedade 'liked' => true
         $ideia['liked'] = true;
     } else {
-        // Adiciona o ideia com a propriedade 'liked' => false
         $ideia['liked'] = false;
     }
     
-    // Adiciona o ideia ao terceiro array
     $ideiasFiltered[] = $ideia;
 }
 
@@ -60,7 +69,8 @@ foreach ($ideias as $ideia) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <h1>Ideias do Tópico <?= htmlspecialchars($topico_id) ?></h1>
+    <button><a href="/menu/menu.php">Voltar</a></button>
+    <h1>Ideias do Tópico <?= htmlspecialchars($topico_info['titulo']) ?></h1>
 
     <h2>Cadastrar Nova Ideia</h2>
     <form action="/ideia/cadastrar_ideia.php" method="POST">
@@ -74,17 +84,15 @@ foreach ($ideias as $ideia) {
             <h2>Últimas Ideias Adicionadas</h2>
             <ul>
                 <?php 
-                // Copia o array original novamente para ordenar por created_at
                 $ideias_ultimas = $ideias;
         
-                // Ordena as ideias pela data de criação
                 usort($ideias_ultimas, function($a, $b) {
                     return strtotime($b['created_at']) - strtotime($a['created_at']);
                 });
         
                 foreach ($ideias_ultimas as $ideia): ?>
                     <li>
-                        <?= htmlspecialchars($ideia['titulo']) ?> - Likes: <?= htmlspecialchars($ideia['likes']) ?>
+                        <?= htmlspecialchars($ideia['titulo']) ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -93,18 +101,8 @@ foreach ($ideias as $ideia) {
             <h2>Ranking das Ideias Mais Votadas</h2>
             <ul>
                 <?php 
-                // Copia o array original para ordenar por likes
-                $ideias_votadas = $ideias;
-                $jsonArray = json_encode($ideias_votadas);
-                $jsonArray2 = json_encode($ideiasCurtidas);
-                $jsonArray3 = json_encode($ideiasFiltered);
-                echo "<script>console.log('$jsonArray')</script>";
-                // echo "<script>console.log('$ideiasCurtidas')</script>";
-                echo "<script>console.log('$jsonArray2')</script>";
-                echo "<script>console.log('\n\n\n\n\n')</script>";
-                echo "<script>console.log('$jsonArray3')</script>";
-                // Ordena as ideias por likes
-                usort($ideias_votadas, function($a, $b) {
+
+                usort($ideiasFiltered, function($a, $b) {
                     return $b['likes'] <=> $a['likes'];
                 });
                 
@@ -117,7 +115,8 @@ foreach ($ideias as $ideia) {
                                 <input type="hidden" name="ideia_id" value="<?= $ideia['id'] ?>">
                                 <input type="hidden" name="topico_id" value="<?= $ideia['topico_id'] ?>">
                                     <button type="submit">
-                                        <i class="fa-solid fa-thumbs-up"></i>
+                                        Descurtir
+                                        <i class="fa-solid fa-thumbs-down"></i>
                                     </button>
                                 </form>
                             <?php else: ?>
@@ -125,17 +124,55 @@ foreach ($ideias as $ideia) {
                                 <input type="hidden" name="ideia_id" value="<?= $ideia['id'] ?>">
                                 <input type="hidden" name="topico_id" value="<?= $ideia['topico_id'] ?>">
                                     <button type="submit">
+                                        Curtir
                                         <i class="fa-regular fa-thumbs-up"></i>
                                     </button>
                                 </form>
                             <?php endif; ?>
-                            <?= htmlspecialchars($ideia['likes']) ?>
-                            LIKED: <?= htmlspecialchars($ideia['liked']) ?>
+                            Likes: <?= htmlspecialchars($ideia['likes']) ?>
                         </div>
                     </li>
                 <?php endforeach; ?>
             </ul>
-        </div>   
+        </div> 
+        <div class="liked">
+            <h2>Ideias Votadas</h2>
+            <ul>
+                <?php 
+                $ideias_curtidas = $ideiasCurtidas;
+                
+                foreach ($ideias_curtidas as $ideia): ?>
+                    <li>
+                        <div class="like_button">
+                            <?= htmlspecialchars($ideia['titulo']) ?>
+                                <form action="/ideia/like_ideia.php" method="POST">
+                                <input type="hidden" name="ideia_id" value="<?= $ideia['ideia_id'] ?>">
+                                <input type="hidden" name="topico_id" value="<?= $ideia['topico_id'] ?>">
+                                    <button type="submit">
+                                        <i class="fa-solid fa-thumbs-up"></i>
+                                    </button>
+                                </form>
+                            <?= htmlspecialchars($ideia['likes']) ?>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div> 
+        <div class="participants">
+            <h2>Participantes</h2>
+            <ul>
+                <?php 
+                $_participantes = $participantes;
+                
+                foreach ($_participantes as $user): ?>
+                    <li>
+                        <div class="participant">
+                            <?= htmlspecialchars($user['name']) ?>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div> 
     </div>
 </body>
 </html>
