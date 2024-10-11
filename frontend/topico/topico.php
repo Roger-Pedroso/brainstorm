@@ -35,7 +35,6 @@ $topico_info = topicoInfo($topico_id);
 $ideias = buscarIdeias($topico_id);
 $ideiasCurtidas = buscarMeusLikes($topico_id, $_SESSION['user_id']);
 $participantes = participantesDoTopico($topico_id);
-
 $ideiasFiltered = [];
 
 function comparaArrays($id, $segundo_array) {
@@ -57,6 +56,7 @@ foreach ($ideias as $ideia) {
     $ideiasFiltered[] = $ideia;
 }
 
+echo '<script>console.log(' . json_encode($ideiasFiltered) . ')</script>';
 ?>
 
 <!DOCTYPE html>
@@ -69,14 +69,14 @@ foreach ($ideias as $ideia) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <button><a href="/menu/menu.php">Voltar</a></button>
+    <a class="back-menu" href="/menu/menu.php">Voltar</a>
     <h1>Ideias do Tópico <?= htmlspecialchars($topico_info['titulo']) ?></h1>
 
     <h2>Cadastrar Nova Ideia</h2>
     <form action="/ideia/cadastrar_ideia.php" method="POST">
         <input type="hidden" name="topico_id" value="<?= $topico_id ?>">
-        <input type="text" name="titulo" placeholder="Título da Ideia" required>
-        <button type="submit">Cadastrar Ideia</button>
+        <input class="register-idea-input" type="text" name="titulo" placeholder="Título da Ideia" required>
+        <button type="submit" class="register-idea">Cadastrar Ideia</button>
     </form>
 
     <div class="ideas">
@@ -84,7 +84,7 @@ foreach ($ideias as $ideia) {
             <h2>Últimas Ideias Adicionadas</h2>
             <ul>
                 <?php 
-                $ideias_ultimas = $ideias;
+                $ideias_ultimas = $ideiasFiltered;
         
                 usort($ideias_ultimas, function($a, $b) {
                     return strtotime($b['created_at']) - strtotime($a['created_at']);
@@ -92,7 +92,30 @@ foreach ($ideias as $ideia) {
         
                 foreach ($ideias_ultimas as $ideia): ?>
                     <li>
-                        <?= htmlspecialchars($ideia['titulo']) ?>
+                        <div class="like_card">
+                            <div>
+                                <?= htmlspecialchars($ideia['titulo']) ?>
+                            </div>
+                            <div>
+                                <form action="/ideia/like_ideia.php" method="POST">
+                                    <input type="hidden" name="ideia_id" value="<?= $ideia['id'] ?>">
+                                    <input type="hidden" name="topico_id" value="<?= $ideia['topico_id'] ?>">
+                                        <?php if (isset($ideia['liked']) && $ideia['liked'] === true): ?>
+                                            <button class='unlike' type="submit">
+                                                Descurtir
+                                                <i class="fa-solid fa-thumbs-down"></i>
+                                                <?= htmlspecialchars($ideia['likes']) ?>
+                                            </button>
+                                        <?php else: ?>
+                                            <button class='like' type="submit">
+                                                Curtir
+                                                <i class="fa-regular fa-thumbs-up"></i>
+                                                <?= htmlspecialchars($ideia['likes']) ?>
+                                            </button>
+                                        <?php endif; ?>
+                                </form>
+                            </div>
+                        </div>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -108,28 +131,25 @@ foreach ($ideias as $ideia) {
                 
                 foreach ($ideiasFiltered as $ideia): ?>
                     <li>
-                        <div class="like_button">
+                        <div class="like_card">
                             <?= htmlspecialchars($ideia['titulo']) ?>
-                            <?php if (isset($ideia['liked']) && $ideia['liked'] === true): ?>
-                                <form action="/ideia/like_ideia.php" method="POST">
+                            <form action="/ideia/like_ideia.php" method="POST">
                                 <input type="hidden" name="ideia_id" value="<?= $ideia['id'] ?>">
                                 <input type="hidden" name="topico_id" value="<?= $ideia['topico_id'] ?>">
-                                    <button type="submit">
-                                        Descurtir
-                                        <i class="fa-solid fa-thumbs-down"></i>
-                                    </button>
-                                </form>
-                            <?php else: ?>
-                                <form action="/ideia/like_ideia.php" method="POST">
-                                <input type="hidden" name="ideia_id" value="<?= $ideia['id'] ?>">
-                                <input type="hidden" name="topico_id" value="<?= $ideia['topico_id'] ?>">
-                                    <button type="submit">
-                                        Curtir
-                                        <i class="fa-regular fa-thumbs-up"></i>
-                                    </button>
-                                </form>
-                            <?php endif; ?>
-                            Likes: <?= htmlspecialchars($ideia['likes']) ?>
+                                    <?php if (isset($ideia['liked']) && $ideia['liked'] === true): ?>
+                                        <button class='unlike' type="submit">
+                                            Descurtir
+                                            <i class="fa-solid fa-thumbs-down"></i>
+                                            <?= htmlspecialchars($ideia['likes']) ?>
+                                        </button>
+                                    <?php else: ?>
+                                        <button class='like' type="submit">
+                                            Curtir
+                                            <i class="fa-regular fa-thumbs-up"></i>
+                                            <?= htmlspecialchars($ideia['likes']) ?>
+                                        </button>
+                                    <?php endif; ?>
+                            </form>
                         </div>
                     </li>
                 <?php endforeach; ?>
@@ -143,16 +163,17 @@ foreach ($ideias as $ideia) {
                 
                 foreach ($ideias_curtidas as $ideia): ?>
                     <li>
-                        <div class="like_button">
+                        <div class="like_card">
                             <?= htmlspecialchars($ideia['titulo']) ?>
                                 <form action="/ideia/like_ideia.php" method="POST">
                                 <input type="hidden" name="ideia_id" value="<?= $ideia['ideia_id'] ?>">
                                 <input type="hidden" name="topico_id" value="<?= $ideia['topico_id'] ?>">
-                                    <button type="submit">
-                                        <i class="fa-solid fa-thumbs-up"></i>
+                                    <button class='unlike' type="submit">
+                                        Descurtir
+                                        <i class="fa-solid fa-thumbs-down"></i>
+                                        <?= htmlspecialchars($ideia['likes']) ?>
                                     </button>
                                 </form>
-                            <?= htmlspecialchars($ideia['likes']) ?>
                         </div>
                     </li>
                 <?php endforeach; ?>

@@ -15,15 +15,24 @@ $topicos = buscarTopicos();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Tópicos</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="sad.css">
 </head>
 <body>
     <h1>Lista de Tópicos</h1>
-    <a href="/topico/cadastrar_topico.php" class="button">Cadastrar Novo Tópico</a>
+
+    <form action="/topico/cadastrar_topico.php" method="POST">
+        <input class="register-topic-input" type="text" name="titulo" placeholder="Título do Tópico" required>
+        <button class="register-topic"type="submit">Cadastrar</button>
+    </form>
+
     <ul>
         <?php foreach ($topicos as $topico): ?>
             <li>
-                <a href="/topico/topico.php?id=<?= $topico['id'] ?>&titulo=<?= $topico['titulo'] ?>"><?= $topico['titulo'] ?></a>
+                <a href="/topico/topico.php?id=<?= $topico['id'] ?>&titulo=<?= $topico['titulo'] ?>">
+                    <div class="topic-card">
+                        <h2><?= htmlspecialchars($topico['titulo']) ?></h2>
+                    </div>
+                </a>
             </li>
         <?php endforeach; ?>
     </ul>

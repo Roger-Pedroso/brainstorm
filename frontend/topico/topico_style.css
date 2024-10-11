@@ -1,24 +1,39 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
+    background-color: #403d39;
 }
 
 h1, h2 {
-    color: #333;
+    color: #000000;
 }
 
-.button {
+.register-idea {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 5px 10px;
     background-color: #28a745;
     color: white;
     text-decoration: none;
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
-.button:hover {
+.register-idea:hover {
     background-color: #218838;
+}
+
+.register-idea-input {
+   padding: 4px 10px;
+   background-color: #acacac;
+}
+
+.back-menu {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    border-radius: 25px;
 }
 
 ul {
@@ -33,12 +48,45 @@ li {
 .ideas {
     margin-top: 20px;
     display: flex;
-    justify-content: space-around;
+    gap: 20px;
 }
 
-.like_button {
-    margin-right: 10px;
-    background-color: #218838;
+.last-ideas {
+    min-width: 27%;
+    max-width: 28%;
+}
+
+.ranking {
+    min-width: 27%;
+    max-width: 28%;
+}
+
+.liked {
+    min-width: 27%;
+    max-width: 28%;
+}
+
+.participants {
+    min-width: 15%;
+    max-width: 16%;
+}
+
+.like_card {
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #466d4e;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+
+    .like {
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #00771c;
+    }
+
+    .unlike {
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #660708;
+    }
 }

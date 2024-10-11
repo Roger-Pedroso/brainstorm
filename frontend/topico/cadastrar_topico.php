@@ -35,18 +35,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Tópico</title>
-</head>
-<body>
-    <h1>Cadastrar Novo Tópico</h1>
-    <form action="" method="POST">
-        <input type="text" name="titulo" placeholder="Título do Tópico" required>
-        <button type="submit">Cadastrar</button>
-    </form>
-</body>
-</html>

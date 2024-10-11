@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #403d39;
+}
+
+h1, h2 {
+    color: #000000;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2b9348;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.button:hover {
+    background-color: #55a630;
+}
+
+.register-topic {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.register-topic:hover {
+    background-color: #218838;
+}
+
+.register-topic-input {
+   padding: 4px 10px;
+   background-color: #acacac;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+li {
+    margin: 10px 0;
+    padding: 10px;
+    max-width: 23%;
+    min-width: 22%;
+}
+
+a {
+    color: #000000;
+    text-decoration: none;
+    background-color: aqua;
+    
+}
+
+.topic-card {
+    background-color: #00296b;
+    padding: 20px;
+    border-radius: 10px;
+    
+}
