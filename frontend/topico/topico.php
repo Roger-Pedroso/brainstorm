@@ -2,19 +2,19 @@
 session_start();
 
 function buscarIdeias($topico_id) {
-    $url = "http://localhost:3000/ideias/$topico_id"; // URL da API para buscar ideias
+    $url = "http://api:3000/ideias/$topico_id"; // URL da API para buscar ideias
     $response = file_get_contents($url);
     return json_decode($response, true);
 }
 
 function buscarMeusLikes($topico_id, $user_id) {
-    $url = "http://localhost:3000/ideias/liked?user_id=$user_id&topico_id=$topico_id"; // URL da API para buscar ideias
+    $url = "http://api:3000/ideias/liked?user_id=$user_id&topico_id=$topico_id"; // URL da API para buscar ideias
     $response = file_get_contents($url);
     return json_decode($response, true);
 }
 
 function participantesDoTopico($topico_id) {
-    $url = "http://localhost:3000/topicos/$topico_id/participantes"; // URL da API para buscar ideias
+    $url = "http://api:3000/topicos/$topico_id/participantes"; // URL da API para buscar ideias
     $response = file_get_contents($url);
     return json_decode($response, true);
 }
@@ -26,7 +26,7 @@ if (!isset($_GET['id'])) {
 $topico_id = $_GET['id'];
 
 function topicoInfo ($topico_id) {
-    $url = "http://localhost:3000/topicos/$topico_id"; // URL da API para buscar ideias
+    $url = "http://api:3000/topicos/$topico_id"; // URL da API para buscar ideias
     $response = file_get_contents($url);
     return json_decode($response, true);
 }

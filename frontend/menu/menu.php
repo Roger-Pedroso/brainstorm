@@ -1,7 +1,7 @@
 <?php
 // Função para buscar tópicos
 function buscarTopicos() {
-    $url = 'http://localhost:3000/topicos'; // URL da API para buscar tópicos
+    $url = 'http://api:3000/topicos'; // URL da API para buscar tópicos
     $response = file_get_contents($url);
     return json_decode($response, true);
 }

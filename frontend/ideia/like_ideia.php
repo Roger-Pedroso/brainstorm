@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_id = $_SESSION['user_id'];
 
     
-    $url = "http://localhost:3000/ideias/{$ideia_id}/like";
+    $url = "http://api:3000/ideias/{$ideia_id}/like";
     
     $data = json_encode(['ideia_id' => $ideia_id, 'user_id' => $user_id]);
     

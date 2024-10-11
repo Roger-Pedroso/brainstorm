@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $titulo = $_POST['titulo'];
     $user_id = $_SESSION['user_id'];
 
-    $url = 'http://localhost:3000/ideias';
+    $url = 'http://api:3000/ideias';
 
     $data = json_encode(['topico_id' => $topico_id, 'titulo' => $titulo, 'user_id' => $user_id]);
 
